@@ -4,11 +4,12 @@ import Footer from './components/Footer';
 import Headers from './components/Headers';
 import { useState } from 'react';
 import AddItem from './components/AddItem';
+import SearchForm from './components/SearchForm';
 
 function App() {
   const [items, setItems] = useState(JSON.parse(localStorage.getItem('shoppinglist')));
-
   const [newItem, setNewItem] = useState('');
+  const [search, setSearch] = useState('');
 
   const setAndSaveItems = (newItems) => {
     setItems(newItems);
@@ -44,7 +45,12 @@ function App() {
     <div className="App">
       <Headers title="To Do List" />
       <AddItem newItem={newItem} setNewItem={setNewItem} handleSubmit={handleSubmit} />
-      <Content items={items} handleDelete={handleDelete} handleCheck={handleCheck} />
+      <SearchForm search={search} setSearch={setSearch} />{' '}
+      <Content
+        items={items.filter((item) => item.item.toLowerCase().includes(search.toLowerCase()))}
+        handleDelete={handleDelete}
+        handleCheck={handleCheck}
+      />
       <Footer length={items.length} />
     </div>
   );
